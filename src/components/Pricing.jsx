@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 
 /* ── Intersection observer ─────────────────────────────── */
 function useInView(threshold = 0.15) {
@@ -63,116 +64,72 @@ function CheckIcon({ color = 'var(--ink)' }) {
 }
 
 /* ── Plan data ─────────────────────────────────────────── */
-const individualPlans = [
-  {
-    name: 'Free',
-    price: '$0',
-    subtitle: 'forever',
-    features: [
-      'Basic wellness score',
-      '7 days of history',
-      'Browser extension',
-      'Daily insights',
-    ],
-    cta: 'Get Started Free',
-    highlighted: false,
-  },
-  {
-    name: 'Pro',
-    price: '$9.99',
-    subtitle: '/month',
-    badge: 'Most popular',
-    features: [
-      'Advanced wellness score',
-      'Unlimited history',
-      'AI powered insights',
-      'Wearable integration',
-      'Data export (CSV)',
-      'Priority support',
-      'Custom alerts',
-    ],
-    cta: 'Start Free Trial',
-    highlighted: true,
-  },
-  {
-    name: 'Pro Yearly',
-    price: '$99.99',
-    subtitle: '/year',
-    features: [
-      'Everything in Pro',
-      '2 months free',
-      'Advanced analytics',
-      'PDF reports',
-      'Dedicated support',
-      'Early feature access',
-      'Personalized coaching tips',
-    ],
-    cta: 'Save with Yearly',
-    highlighted: false,
-  },
-];
+function getIndividualPlans(t) {
+  return [
+    {
+      name: t('pricing.individual.free.name'),
+      price: t('pricing.individual.free.price'),
+      subtitle: t('pricing.individual.free.subtitle'),
+      features: [0, 1, 2, 3].map((i) => t(`pricing.individual.free.features.${i}`)),
+      cta: t('pricing.individual.free.cta'),
+      highlighted: false,
+    },
+    {
+      name: t('pricing.individual.pro.name'),
+      price: t('pricing.individual.pro.price'),
+      subtitle: t('pricing.individual.pro.subtitle'),
+      badge: t('pricing.badge.mostPopular'),
+      features: [0, 1, 2, 3, 4, 5, 6].map((i) => t(`pricing.individual.pro.features.${i}`)),
+      cta: t('pricing.individual.pro.cta'),
+      highlighted: true,
+    },
+    {
+      name: t('pricing.individual.proYearly.name'),
+      price: t('pricing.individual.proYearly.price'),
+      subtitle: t('pricing.individual.proYearly.subtitle'),
+      features: [0, 1, 2, 3, 4, 5, 6].map((i) => t(`pricing.individual.proYearly.features.${i}`)),
+      cta: t('pricing.individual.proYearly.cta'),
+      highlighted: false,
+    },
+  ];
+}
 
-const businessPlans = [
-  {
-    name: 'Starter',
-    price: '$9.99',
-    subtitle: '/user/month',
-    features: [
-      '1 to 50 users',
-      'Team dashboard',
-      'Anonymous insights',
-      'Monthly reports',
-      'Email support',
-      'Basic integrations',
-    ],
-    cta: 'Request Demo',
-    highlighted: false,
-  },
-  {
-    name: 'Professional',
-    price: '$19.90',
-    subtitle: '/user/month',
-    badge: 'Most popular',
-    features: [
-      '51 to 500 users',
-      'Advanced analytics',
-      'Custom branding',
-      'API access',
-      'Priority support',
-      'SSO integration',
-      'Weekly reports',
-      'Dedicated account manager',
-    ],
-    cta: 'Request Demo',
-    highlighted: true,
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    subtitle: 'tailored to your org',
-    features: [
-      'Unlimited employees',
-      'Custom deployment',
-      'On premise option',
-      'Full API access',
-      '24/7 dedicated support',
-      'Custom integrations',
-      'SLA guarantee',
-      'Security audit',
-    ],
-    cta: 'Contact Sales',
-    highlighted: false,
-  },
-];
+function getBusinessPlans(t) {
+  return [
+    {
+      name: t('pricing.business.starter.name'),
+      price: t('pricing.business.starter.price'),
+      subtitle: t('pricing.business.starter.subtitle'),
+      features: [0, 1, 2, 3, 4, 5].map((i) => t(`pricing.business.starter.features.${i}`)),
+      cta: t('pricing.business.starter.cta'),
+      highlighted: false,
+    },
+    {
+      name: t('pricing.business.professional.name'),
+      price: t('pricing.business.professional.price'),
+      subtitle: t('pricing.business.professional.subtitle'),
+      badge: t('pricing.badge.mostPopular'),
+      features: [0, 1, 2, 3, 4, 5, 6, 7].map((i) => t(`pricing.business.professional.features.${i}`)),
+      cta: t('pricing.business.professional.cta'),
+      highlighted: true,
+    },
+    {
+      name: t('pricing.business.enterprise.name'),
+      price: t('pricing.business.enterprise.price'),
+      subtitle: t('pricing.business.enterprise.subtitle'),
+      features: [0, 1, 2, 3, 4, 5, 6, 7].map((i) => t(`pricing.business.enterprise.features.${i}`)),
+      cta: t('pricing.business.enterprise.cta'),
+      highlighted: false,
+    },
+  ];
+}
 
 /* ── Business stats banner ─────────────────────────────── */
-function StatsBanner({ visible, isMobile }) {
-  const stats = [
-    { value: '300%', label: 'Average ROI' },
-    { value: '30%', label: 'Burnout Reduction' },
-    { value: '40%', label: 'Turnover Reduction' },
-    { value: '85%', label: 'Prediction Accuracy' },
-  ];
+function StatsBanner({ visible, isMobile, t }) {
+  const stats = [0, 1, 2, 3].map((i) => ({
+    value: t(`pricing.stats.${i}.value`),
+    label: t(`pricing.stats.${i}.label`),
+  }));
 
   return (
     <div
@@ -197,7 +154,7 @@ function StatsBanner({ visible, isMobile }) {
           letterSpacing: '0.01em',
         }}
       >
-        Why Companies Choose Equilybrium
+        {t('pricing.stats.heading')}
       </h3>
 
       <div
@@ -241,13 +198,13 @@ function StatsBanner({ visible, isMobile }) {
 }
 
 /* ── Sliding pill tab toggle ───────────────────────────── */
-function TabToggle({ activeTab, onSwitch }) {
+function TabToggle({ activeTab, onSwitch, t }) {
   const containerRef = useRef(null);
   const [pillStyle, setPillStyle] = useState({});
 
   const tabItems = [
-    { key: 'individuals', label: 'For Individuals' },
-    { key: 'business', label: 'For Business' },
+    { key: 'individuals', label: t('pricing.tabs.individuals') },
+    { key: 'business', label: t('pricing.tabs.business') },
   ];
 
   useEffect(() => {
@@ -550,12 +507,13 @@ export default function Pricing() {
   const { ref, visible } = useInView(0.08);
   const reducedMotion = usePrefersReducedMotion();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
 
-  const plans = activeTab === 'individuals' ? individualPlans : businessPlans;
+  const plans = activeTab === 'individuals' ? getIndividualPlans(t) : getBusinessPlans(t);
   const footerText =
     activeTab === 'individuals'
-      ? '14-day free trial on all paid plans · Cancel anytime'
-      : 'All business plans include implementation support and training.';
+      ? t('pricing.footer.individuals')
+      : t('pricing.footer.business');
 
   const handleTabSwitch = useCallback((newTab) => {
     if (newTab === activeTab) return;
@@ -601,7 +559,7 @@ export default function Pricing() {
               marginBottom: '24px',
             }}
           >
-            Pricing
+            {t('pricing.label')}
           </p>
           <h2
             style={{
@@ -616,16 +574,16 @@ export default function Pricing() {
               marginBottom: '36px',
             }}
           >
-            Start free. Scale when your team is ready.
+            {t('pricing.heading')}
           </h2>
 
-          <TabToggle activeTab={activeTab} onSwitch={handleTabSwitch} />
+          <TabToggle activeTab={activeTab} onSwitch={handleTabSwitch} t={t} />
         </div>
 
         {/* Transitioning content */}
         <div style={{ viewTransitionName: 'pricing-cards' }}>
           {/* Stats banner (business only) */}
-          {activeTab === 'business' && <StatsBanner visible={visible} isMobile={isMobile} />}
+          {activeTab === 'business' && <StatsBanner visible={visible} isMobile={isMobile} t={t} />}
 
           {/* Cards */}
           <div className="pricing-grid" style={{ margin: '0 auto' }}>

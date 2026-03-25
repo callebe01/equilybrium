@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
+import LanguageSelector from './LanguageSelector';
 
-const NAV_LINKS = [
-  { label: 'What we do', href: '#what-we-do' },
-  { label: 'Who it\'s for', href: '#who-its-for' },
-  { label: 'Why Equilybrium', href: '#why' },
-  { label: 'Privacy', href: '#privacy' },
-  { label: 'Pricing', href: '#pricing' },
-];
+function getNavLinks(t) {
+  return [
+    { label: t('navbar.links.whatWeDo'), href: '#what-we-do' },
+    { label: t('navbar.links.whoItsFor'), href: '#who-its-for' },
+    { label: t('navbar.links.whyEquilybrium'), href: '#why' },
+    { label: t('navbar.links.privacy'), href: '#privacy' },
+    { label: t('navbar.links.pricing'), href: '#pricing' },
+  ];
+}
 
 const linkStyle = {
   fontSize: '13px',
@@ -69,6 +73,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
+  const navLinks = getNavLinks(t);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -127,7 +133,7 @@ export default function Navbar() {
             className="flex items-center gap-0.5 opacity-0"
             style={{ animation: 'fadeUp 0.7s ease 0.2s forwards' }}
           >
-            {NAV_LINKS.map(({ label, href }) => (
+            {navLinks.map(({ label, href }) => (
               <a
                 key={href}
                 href={href}
@@ -139,6 +145,9 @@ export default function Navbar() {
                 {label}
               </a>
             ))}
+            <div style={{ marginLeft: '8px' }}>
+              <LanguageSelector />
+            </div>
             <a
               href="#"
               className="no-underline"
@@ -156,7 +165,7 @@ export default function Navbar() {
               onMouseEnter={(e) => (e.currentTarget.style.background = '#2d2d2a')}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--ink)')}
             >
-              Start now
+              {t('navbar.cta.startNow')}
             </a>
           </div>
         )}
@@ -165,7 +174,7 @@ export default function Navbar() {
         {isMobile && (
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? t('navbar.aria.closeMenu') : t('navbar.aria.openMenu')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -206,7 +215,7 @@ export default function Navbar() {
           }}
         >
           <div style={{ padding: '8px 8px 16px' }}>
-            {NAV_LINKS.map(({ label, href }) => (
+            {navLinks.map(({ label, href }) => (
               <a
                 key={href}
                 href={href}
@@ -234,7 +243,10 @@ export default function Navbar() {
                 {label}
               </a>
             ))}
-            <div style={{ padding: '8px 8px 0' }}>
+            <div style={{ padding: '8px 8px 4px' }}>
+              <LanguageSelector mobile />
+            </div>
+            <div style={{ padding: '4px 8px 0' }}>
               <a
                 href="#"
                 onClick={() => setMenuOpen(false)}
@@ -251,7 +263,7 @@ export default function Navbar() {
                   letterSpacing: '0.02em',
                 }}
               >
-                Start now
+                {t('navbar.cta.startNow')}
               </a>
             </div>
           </div>

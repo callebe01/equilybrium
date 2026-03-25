@@ -1,4 +1,5 @@
 import logo from '../assets/logo.png';
+import { useTranslation } from '../i18n';
 
 /* ── SVG Social Icons ──────────────────────────────────── */
 const XIcon = () => (
@@ -19,35 +20,42 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const socialLinks = [
-  { icon: XIcon, href: '#', label: 'X (Twitter)' },
-  { icon: LinkedInIcon, href: '#', label: 'LinkedIn' },
-  { icon: InstagramIcon, href: '#', label: 'Instagram' },
-];
+function getSocialLinks(t) {
+  return [
+    { icon: XIcon, href: '#', label: t('footer.social.twitter') },
+    { icon: LinkedInIcon, href: '#', label: t('footer.social.linkedin') },
+    { icon: InstagramIcon, href: '#', label: t('footer.social.instagram') },
+  ];
+}
 
 /* ── Footer link columns ───────────────────────────────── */
-const footerLinks = [
-  {
-    heading: 'Product',
-    links: [
-      { label: 'How it works', href: '#' },
-      { label: 'For individuals', href: '#' },
-      { label: 'For teams', href: '#' },
-      { label: 'Pricing', href: '#' },
-    ],
-  },
-  {
-    heading: 'Support',
-    links: [
-      { label: 'Contact', href: '#' },
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
-    ],
-  },
-];
+function getFooterLinks(t) {
+  return [
+    {
+      heading: t('footer.columns.product'),
+      links: [
+        { label: t('footer.columns.product.howItWorks'), href: '#' },
+        { label: t('footer.columns.product.forIndividuals'), href: '#' },
+        { label: t('footer.columns.product.forTeams'), href: '#' },
+        { label: t('footer.columns.product.pricing'), href: '#' },
+      ],
+    },
+    {
+      heading: t('footer.columns.support'),
+      links: [
+        { label: t('footer.columns.support.contact'), href: '#' },
+        { label: t('footer.columns.support.privacyPolicy'), href: '#' },
+        { label: t('footer.columns.support.termsOfService'), href: '#' },
+      ],
+    },
+  ];
+}
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { t } = useTranslation();
+  const socialLinks = getSocialLinks(t);
+  const footerLinks = getFooterLinks(t);
 
   return (
     <footer
@@ -108,8 +116,7 @@ export default function Footer() {
                 marginBottom: '28px',
               }}
             >
-              For your mind, for your life. AI powered burnout prevention
-              that keeps you balanced, productive, and healthy.
+              {t('footer.description')}
             </p>
 
             {/* Social icons */}
@@ -204,7 +211,7 @@ export default function Footer() {
               color: 'rgba(255,255,255,0.25)',
             }}
           >
-            &copy; {currentYear} Equilybrium. All rights reserved.
+            {t('footer.copyright').replace('{year}', currentYear)}
           </p>
           <p
             style={{
@@ -214,7 +221,7 @@ export default function Footer() {
               fontStyle: 'italic',
             }}
           >
-            For your mind, for your life.
+            {t('footer.tagline')}
           </p>
         </div>
       </div>

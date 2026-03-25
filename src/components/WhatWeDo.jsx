@@ -1,9 +1,11 @@
 import useScrollProgress from '../hooks/useScrollProgress';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 
 export default function WhatWeDo() {
   const { ref, progress } = useScrollProgress();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
 
   // Circles drift from left to right as user scrolls through the section
   const drift = progress * (isMobile ? 250 : 500);
@@ -91,7 +93,7 @@ export default function WhatWeDo() {
                 marginBottom: '20px',
               }}
             >
-              What Equilybrium does
+              {t('whatWeDo.label')}
             </p>
             <h2
               style={{
@@ -104,9 +106,9 @@ export default function WhatWeDo() {
                 marginBottom: '28px',
               }}
             >
-              It reads the signals
+              {t('whatWeDo.heading.line1')}
               <br />
-              you've learned to ignore.
+              {t('whatWeDo.heading.line2')}
             </h2>
             <p
               style={{
@@ -117,9 +119,7 @@ export default function WhatWeDo() {
                 maxWidth: '440px',
               }}
             >
-              Equilybrium uses AI to analyze your work patterns, sleep data, and
-              health metrics. It surfaces early signs of burnout weeks before you
-              feel them, giving you time to act.
+              {t('whatWeDo.body')}
             </p>
           </div>
 
@@ -128,18 +128,18 @@ export default function WhatWeDo() {
             {[
               {
                 number: '01',
-                title: 'Early detection',
-                desc: 'Identifies burnout signals 3 to 4 weeks before traditional methods. Patterns emerge in your data long before they surface as symptoms.',
+                title: t('whatWeDo.features.0.title'),
+                desc: t('whatWeDo.features.0.desc'),
               },
               {
                 number: '02',
-                title: 'Personalized insights',
-                desc: 'Machine learning builds a model of your unique rhythms. Recommendations adapt to your patterns, not generic averages.',
+                title: t('whatWeDo.features.1.title'),
+                desc: t('whatWeDo.features.1.desc'),
               },
               {
                 number: '03',
-                title: 'Continuous monitoring',
-                desc: 'A daily wellness score drawn from your activity, sleep, and workload. Track trends over time and understand what drives your energy.',
+                title: t('whatWeDo.features.2.title'),
+                desc: t('whatWeDo.features.2.desc'),
               },
             ].map((item) => (
               <div key={item.number} style={{ display: 'flex', gap: isMobile ? '16px' : '24px' }}>

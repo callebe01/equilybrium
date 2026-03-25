@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 import yourSpaceImg from '../assets/your-space.png';
 import focusTimeImg from '../assets/focus-time.png';
 import recoveryImg from '../assets/recovery.png';
@@ -48,44 +49,46 @@ function usePrefersReducedMotion() {
 }
 
 /* ── Tab data ──────────────────────────────────────────── */
-const tabsData = {
-  individuals: {
-    label: 'For knowledge workers',
-    headline: (
-      <>
-        You've been running
-        <br />
-        at <em style={{ fontStyle: 'italic', color: 'var(--muted)' }}>full capacity for too long.</em>
-      </>
-    ),
-    body: "You know something's off. The focus is scattered, the recovery never quite happens, the weekend doesn't feel like enough. Equilybrium gives you a personal picture of your digital workload and tells you, calmly, when to pull back before you hit the wall.",
-    primaryCta: 'Start now',
-    secondaryCta: 'See how it works',
-    cards: [
-      { label: 'Your space', image: yourSpaceImg },
-      { label: 'Focus time', image: focusTimeImg },
-      { label: 'Recovery', image: recoveryImg },
-    ],
-  },
-  companies: {
-    label: 'For HR & people leads',
-    headline: (
-      <>
-        By the time you hear about it,
-        <br />
-        they're already <em style={{ fontStyle: 'italic', color: 'var(--muted)' }}>planning to leave.</em>
-      </>
-    ),
-    body: "Burnout shows up in resignation letters and exit interviews, never early enough. Equilybrium gives your HR team a quiet early warning system, built on workload patterns rather than surveys, so you can step in at exactly the right moment.",
-    primaryCta: 'Start now',
-    secondaryCta: 'Request Demo',
-    cards: [
-      { label: 'HR Lead', image: hrLeadImg },
-      { label: 'Team view', image: teamViewImg },
-      { label: 'People ops', image: peopleOpsImg },
-    ],
-  },
-};
+function getTabsData(t) {
+  return {
+    individuals: {
+      label: t('builtForBoth.individuals.label'),
+      headline: (
+        <>
+          {t('builtForBoth.individuals.headline')}
+          <br />
+          <em style={{ fontStyle: 'italic', color: 'var(--muted)' }}>{t('builtForBoth.individuals.headlineEmphasis')}</em>
+        </>
+      ),
+      body: t('builtForBoth.individuals.body'),
+      primaryCta: t('builtForBoth.individuals.primaryCta'),
+      secondaryCta: t('builtForBoth.individuals.secondaryCta'),
+      cards: [
+        { label: t('builtForBoth.individuals.cards.yourSpace'), image: yourSpaceImg },
+        { label: t('builtForBoth.individuals.cards.focusTime'), image: focusTimeImg },
+        { label: t('builtForBoth.individuals.cards.recovery'), image: recoveryImg },
+      ],
+    },
+    companies: {
+      label: t('builtForBoth.companies.label'),
+      headline: (
+        <>
+          {t('builtForBoth.companies.headline')}
+          <br />
+          <em style={{ fontStyle: 'italic', color: 'var(--muted)' }}>{t('builtForBoth.companies.headlineEmphasis')}</em>
+        </>
+      ),
+      body: t('builtForBoth.companies.body'),
+      primaryCta: t('builtForBoth.companies.primaryCta'),
+      secondaryCta: t('builtForBoth.companies.secondaryCta'),
+      cards: [
+        { label: t('builtForBoth.companies.cards.hrLead'), image: hrLeadImg },
+        { label: t('builtForBoth.companies.cards.teamView'), image: teamViewImg },
+        { label: t('builtForBoth.companies.cards.peopleOps'), image: peopleOpsImg },
+      ],
+    },
+  };
+}
 
 /* ── View Transition styles ────────────────────────────── */
 const viewTransitionStyles = `
@@ -220,13 +223,13 @@ function ImageGrid({ cards, isMobile }) {
 }
 
 /* ── Sliding pill tab toggle ───────────────────────────── */
-function TabToggle({ activeTab, onSwitch }) {
+function TabToggle({ activeTab, onSwitch, t }) {
   const containerRef = useRef(null);
   const [pillStyle, setPillStyle] = useState({});
 
   const tabItems = [
-    { key: 'individuals', label: 'For individuals' },
-    { key: 'companies', label: 'For companies' },
+    { key: 'individuals', label: t('builtForBoth.tabs.individuals') },
+    { key: 'companies', label: t('builtForBoth.tabs.companies') },
   ];
 
   useEffect(() => {
@@ -302,6 +305,8 @@ export default function BuiltForBoth() {
   const { ref, visible } = useInView(0.1);
   const reducedMotion = usePrefersReducedMotion();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
+  const tabsData = getTabsData(t);
   const data = tabsData[activeTab];
 
   const handleTabSwitch = useCallback((newTab) => {
@@ -350,7 +355,7 @@ export default function BuiltForBoth() {
               marginBottom: '24px',
             }}
           >
-            Built for both
+            {t('builtForBoth.label')}
           </p>
           <h2
             style={{
@@ -363,12 +368,12 @@ export default function BuiltForBoth() {
               marginBottom: '36px',
             }}
           >
-            For you personally.
+            {t('builtForBoth.heading.line1')}
             <br />
-            For the team you're responsible for.
+            {t('builtForBoth.heading.line2')}
           </h2>
 
-          <TabToggle activeTab={activeTab} onSwitch={handleTabSwitch} />
+          <TabToggle activeTab={activeTab} onSwitch={handleTabSwitch} t={t} />
         </div>
 
         {/* Content area */}

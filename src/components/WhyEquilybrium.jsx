@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from '../i18n';
 
 /* ── Intersection observer ─────────────────────────────── */
 function useInView(threshold = 0.15) {
@@ -40,7 +41,7 @@ function usePrefersReducedMotion() {
 }
 
 /* ── Balance visual (bolder version) ───────────────────── */
-function BalanceVisual({ visible, reducedMotion }) {
+function BalanceVisual({ visible, reducedMotion, t }) {
   return (
     <div
       style={{
@@ -126,7 +127,7 @@ function BalanceVisual({ visible, reducedMotion }) {
             fontFamily="'DM Sans', sans-serif"
             textTransform="uppercase"
           >
-            EFFORT
+            {t('whyEquilybrium.effort')}
           </text>
 
           {/* Right weight — recovery */}
@@ -142,7 +143,7 @@ function BalanceVisual({ visible, reducedMotion }) {
             opacity="0.35"
             fontFamily="'DM Sans', sans-serif"
           >
-            RECOVERY
+            {t('whyEquilybrium.recovery')}
           </text>
 
           {/* Center equilibrium dot */}
@@ -168,6 +169,7 @@ function BalanceVisual({ visible, reducedMotion }) {
 export default function WhyEquilybrium() {
   const { ref, visible } = useInView(0.1);
   const reducedMotion = usePrefersReducedMotion();
+  const { t } = useTranslation();
 
   return (
     <section
@@ -214,14 +216,14 @@ export default function WhyEquilybrium() {
             transition: 'opacity 0.9s ease, transform 0.9s ease',
           }}
         >
-          Why Equilybrium?
+          {t('whyEquilybrium.heading')}
         </h2>
 
         {/* Spacer between heading and beam */}
         <div style={{ height: 'clamp(40px, 5vw, 64px)' }} />
 
         {/* Balance visual */}
-        <BalanceVisual visible={visible} reducedMotion={reducedMotion} />
+        <BalanceVisual visible={visible} reducedMotion={reducedMotion} t={t} />
 
         {/* Manifesto statement — larger, more confident */}
         <div
@@ -244,8 +246,7 @@ export default function WhyEquilybrium() {
               letterSpacing: '-0.01em',
             }}
           >
-            Equilibrium is the point where effort and recovery meet.
-            Where ambition stops costing your health.
+            {t('whyEquilybrium.manifesto')}
           </p>
 
           <p
@@ -258,9 +259,7 @@ export default function WhyEquilybrium() {
               margin: '32px auto 0',
             }}
           >
-            We built Equilybrium because that balance should not be something
-            you find by accident after burning out. It should be something
-            you can see, measure, and protect.
+            {t('whyEquilybrium.body')}
           </p>
         </div>
       </div>

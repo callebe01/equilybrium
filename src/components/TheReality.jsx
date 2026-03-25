@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 
 function useInView(threshold = 0.2) {
   const ref = useRef(null);
@@ -29,6 +30,7 @@ function useInView(threshold = 0.2) {
 export default function TheReality() {
   const { ref, visible } = useInView(0.15);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
 
   return (
     <section
@@ -58,7 +60,7 @@ export default function TheReality() {
             transition: 'opacity 0.7s ease, transform 0.7s ease',
           }}
         >
-          The reality
+          {t('theReality.label')}
         </p>
 
         {/* Headline */}
@@ -76,7 +78,7 @@ export default function TheReality() {
             transition: 'opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s',
           }}
         >
-          Burnout doesn't announce itself.
+          {t('theReality.heading.main')}
           <br />
           <em
             style={{
@@ -84,9 +86,7 @@ export default function TheReality() {
               color: 'rgba(255,255,255,0.35)',
             }}
           >
-            It accumulates — quietly —
-            <br />
-            until something breaks.
+            {t('theReality.heading.emphasis')}
           </em>
         </h2>
 
@@ -104,9 +104,7 @@ export default function TheReality() {
             transition: 'opacity 0.8s ease 0.35s, transform 0.8s ease 0.35s',
           }}
         >
-          Whether you're a knowledge worker running on fumes or an HR lead
-          watching your team's energy decline, the signal is always there.
-          Equilybrium helps you read it before the damage is done.
+          {t('theReality.body')}
         </p>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -29,6 +30,7 @@ function useInView(threshold = 0.15) {
 export default function GetStarted() {
   const { ref, visible } = useInView(0.15);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
 
   return (
     <section
@@ -78,7 +80,7 @@ export default function GetStarted() {
             transition: 'opacity 0.7s ease, transform 0.7s ease',
           }}
         >
-          Get started
+          {t('getStarted.label')}
         </p>
 
         {/* Heading */}
@@ -96,7 +98,7 @@ export default function GetStarted() {
             transition: 'opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s',
           }}
         >
-          A team that doesn't burn out
+          {t('getStarted.heading.line1')}
           <br />
           <em
             style={{
@@ -104,10 +106,10 @@ export default function GetStarted() {
               color: 'rgba(255,255,255,0.4)',
             }}
           >
-            doesn't just perform better.
+            {t('getStarted.heading.emphasis')}
           </em>
           <br />
-          They stay.
+          {t('getStarted.heading.line3')}
         </h2>
 
         {/* Body */}
@@ -124,8 +126,7 @@ export default function GetStarted() {
             transition: 'opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s',
           }}
         >
-          Start free as an individual, or bring Equilybrium to your whole
-          team. Either way, the best time to start is before anyone feels it.
+          {t('getStarted.body')}
         </p>
 
         {/* CTAs */}
@@ -162,7 +163,7 @@ export default function GetStarted() {
               transition: 'transform 0.2s ease, box-shadow 0.2s ease',
             }}
           >
-            Start now <span>→</span>
+            {t('getStarted.cta.startNow')} <span>→</span>
           </a>
           <a
             href="#"
@@ -184,7 +185,7 @@ export default function GetStarted() {
               transition: 'border-color 0.2s ease',
             }}
           >
-            Request Demo
+            {t('getStarted.cta.requestDemo')}
           </a>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import heroImg from '../assets/hero.jpg';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 
 export default function Hero() {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
 
   return (
     <section
@@ -12,7 +14,7 @@ export default function Hero() {
       {/* Full-bleed hero image */}
       <img
         src={heroImg}
-        alt="Professional commuting on a train, looking out the window"
+        alt={t('hero.img.alt')}
         style={{
           position: 'absolute',
           top: 0,
@@ -62,7 +64,7 @@ export default function Hero() {
               fontFamily: "'Playfair Display', serif",
               fontSize: isMobile
                 ? '60px'
-                : 'clamp(4.5rem, 8vw, 120px)',
+                : 'clamp(3rem, 6vw, 6.5rem)',
               fontWeight: isMobile ? 500 : 400,
               color: '#fff',
               lineHeight: 1.12,
@@ -73,9 +75,9 @@ export default function Hero() {
                 '0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.15)',
             }}
           >
-            Prevent Burnout
+            {t('hero.heading.line1')}
             <br />
-            Before It Happens.
+            {t('hero.heading.line2')}
           </h1>
           <p
             className="opacity-0"
@@ -90,9 +92,7 @@ export default function Hero() {
               animation: 'fadeUp 0.7s ease 0.6s forwards',
             }}
           >
-            Equilybrium monitors your team's digital workload patterns and
-            surfaces what needs your attention — quietly, before it becomes
-            urgent.
+            {t('hero.description')}
           </p>
           <div
             className="opacity-0"
@@ -128,7 +128,7 @@ export default function Hero() {
               onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.88)')}
               onMouseLeave={(e) => (e.currentTarget.style.background = '#fff')}
             >
-              Start Now
+              {t('hero.cta.startNow')}
               <span
                 className="transition-transform group-hover:translate-x-[3px]"
                 style={{ fontSize: '16px' }}
@@ -156,7 +156,7 @@ export default function Hero() {
               onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.95)')}
               onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
             >
-              Request Demo
+              {t('hero.cta.requestDemo')}
             </a>
             <span
               style={{
@@ -166,7 +166,7 @@ export default function Hero() {
                 textAlign: isMobile ? 'center' : 'left',
               }}
             >
-              Currently in private beta
+              {t('hero.badge.privateBeta')}
             </span>
           </div>
         </div>

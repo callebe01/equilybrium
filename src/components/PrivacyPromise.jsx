@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import trustBg from '../assets/trust.png';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useTranslation } from '../i18n';
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -121,7 +122,7 @@ function PillarCard({ icon, iconBg, title, desc, delay, visible }) {
 }
 
 /* ── Trust card (right column) — image with text overlay ── */
-function TrustCard({ visible, isMobile }) {
+function TrustCard({ visible, isMobile, t }) {
   return (
     <div
       style={{
@@ -184,9 +185,9 @@ function TrustCard({ visible, isMobile }) {
             transition: 'opacity 0.7s ease 0.6s, transform 0.7s ease 0.6s',
           }}
         >
-          Your data stays
+          {t('privacy.trust.heading.line1')}
           <br />
-          yours. Always.
+          {t('privacy.trust.heading.line2')}
         </h3>
 
         <p
@@ -201,7 +202,7 @@ function TrustCard({ visible, isMobile }) {
             transition: 'opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s',
           }}
         >
-          Equilybrium sees patterns, not people.
+          {t('privacy.trust.body')}
         </p>
       </div>
     </div>
@@ -209,34 +210,38 @@ function TrustCard({ visible, isMobile }) {
 }
 
 /* ── Privacy pillars data ──────────────────────────────── */
-const pillars = [
-  {
-    icon: <LockIcon />,
-    iconBg: 'rgba(184,134,11,0.1)',
-    title: 'Individual data never reaches employers',
-    desc: 'Your personal plan data is yours alone. Managers only ever see team-level, anonymized patterns.',
-    delay: 0.35,
-  },
-  {
-    icon: <EyeIcon />,
-    iconBg: 'rgba(122,99,64,0.1)',
-    title: 'Full transparency on both sides',
-    desc: 'Everyone, individuals and teams, can see exactly what is monitored. Opt out of anything, anytime.',
-    delay: 0.5,
-  },
-  {
-    icon: <ShieldCheckIcon />,
-    iconBg: 'rgba(158,74,74,0.1)',
-    title: 'GDPR & SOC 2 compliant',
-    desc: 'Enterprise-grade security for companies. Personal data sovereignty for individuals.',
-    delay: 0.65,
-  },
-];
+function getPillars(t) {
+  return [
+    {
+      icon: <LockIcon />,
+      iconBg: 'rgba(184,134,11,0.1)',
+      title: t('privacy.pillars.0.title'),
+      desc: t('privacy.pillars.0.desc'),
+      delay: 0.35,
+    },
+    {
+      icon: <EyeIcon />,
+      iconBg: 'rgba(122,99,64,0.1)',
+      title: t('privacy.pillars.1.title'),
+      desc: t('privacy.pillars.1.desc'),
+      delay: 0.5,
+    },
+    {
+      icon: <ShieldCheckIcon />,
+      iconBg: 'rgba(158,74,74,0.1)',
+      title: t('privacy.pillars.2.title'),
+      desc: t('privacy.pillars.2.desc'),
+      delay: 0.65,
+    },
+  ];
+}
 
 /* ── Main section ──────────────────────────────────────── */
 export default function PrivacyPromise() {
   const { ref: sectionRef, visible } = useInView(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { t } = useTranslation();
+  const pillars = getPillars(t);
 
   return (
     <section
@@ -281,7 +286,7 @@ export default function PrivacyPromise() {
                 transition: 'opacity 0.7s ease, transform 0.7s ease',
               }}
             >
-              Privacy & Trust
+              {t('privacy.label')}
             </p>
 
             {/* Heading */}
@@ -300,7 +305,7 @@ export default function PrivacyPromise() {
                 transition: 'opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s',
               }}
             >
-              Your wellbeing data requires a different standard.
+              {t('privacy.heading')}
             </h2>
 
             {/* Body text */}
@@ -317,9 +322,7 @@ export default function PrivacyPromise() {
                 transition: 'opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s',
               }}
             >
-              Whether you are an individual or an HR lead, the answer to "what
-              does the other side see?" should always be: nothing they should not.
-              Equilybrium is built around that commitment.
+              {t('privacy.body')}
             </p>
 
             {/* Pillar cards */}
@@ -335,7 +338,7 @@ export default function PrivacyPromise() {
           </div>
 
           {/* Right column — trust card */}
-          <TrustCard visible={visible} isMobile={isMobile} />
+          <TrustCard visible={visible} isMobile={isMobile} t={t} />
         </div>
       </div>
     </section>
