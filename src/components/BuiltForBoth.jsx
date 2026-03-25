@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { flushSync } from 'react-dom';
+import useMediaQuery from '../hooks/useMediaQuery';
 import yourSpaceImg from '../assets/your-space.png';
 import focusTimeImg from '../assets/focus-time.png';
 import recoveryImg from '../assets/recovery.png';
@@ -159,16 +160,16 @@ const viewTransitionStyles = `
 `;
 
 /* ── Image grid ────────────────────────────────────────── */
-function ImageGrid({ cards }) {
+function ImageGrid({ cards, isMobile }) {
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1.1fr',
+        gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1.1fr',
         gridTemplateRows: '1fr 1fr',
         gap: '12px',
         height: '100%',
-        minHeight: '480px',
+        minHeight: isMobile ? '280px' : '480px',
       }}
     >
       {cards.map((card, i) => (
@@ -300,6 +301,7 @@ export default function BuiltForBoth() {
   const [activeTab, setActiveTab] = useState('individuals');
   const { ref, visible } = useInView(0.1);
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const data = tabsData[activeTab];
 
   const handleTabSwitch = useCallback((newTab) => {
@@ -380,7 +382,7 @@ export default function BuiltForBoth() {
         >
           {/* Left — Image grid (view-transition target) */}
           <div style={{ viewTransitionName: 'bfb-images' }}>
-            <ImageGrid cards={data.cards} />
+            <ImageGrid cards={data.cards} isMobile={isMobile} />
           </div>
 
           {/* Right — Copy (view-transition target) */}

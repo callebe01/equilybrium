@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import trustBg from '../assets/trust.png';
-
+import useMediaQuery from '../hooks/useMediaQuery';
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -121,14 +121,14 @@ function PillarCard({ icon, iconBg, title, desc, delay, visible }) {
 }
 
 /* ── Trust card (right column) — image with text overlay ── */
-function TrustCard({ visible }) {
+function TrustCard({ visible, isMobile }) {
   return (
     <div
       style={{
         borderRadius: '28px',
         position: 'relative',
         overflow: 'hidden',
-        minHeight: '480px',
+        minHeight: isMobile ? '320px' : '480px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
@@ -236,6 +236,7 @@ const pillars = [
 /* ── Main section ──────────────────────────────────────── */
 export default function PrivacyPromise() {
   const { ref: sectionRef, visible } = useInView(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -334,7 +335,7 @@ export default function PrivacyPromise() {
           </div>
 
           {/* Right column — trust card */}
-          <TrustCard visible={visible} />
+          <TrustCard visible={visible} isMobile={isMobile} />
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 function useInView(threshold = 0.2) {
   const ref = useRef(null);
@@ -27,6 +28,7 @@ function useInView(threshold = 0.2) {
 
 export default function TheReality() {
   const { ref, visible } = useInView(0.15);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -34,11 +36,11 @@ export default function TheReality() {
       className="relative overflow-hidden"
       style={{
         background: 'var(--ink)',
-        minHeight: '100vh',
+        minHeight: isMobile ? 'auto' : '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '160px 48px',
+        padding: isMobile ? '80px 20px' : '160px 48px',
       }}
     >
       <div style={{ textAlign: 'center', maxWidth: '900px' }}>

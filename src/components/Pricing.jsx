@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { flushSync } from 'react-dom';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 /* ── Intersection observer ─────────────────────────────── */
 function useInView(threshold = 0.15) {
@@ -165,7 +166,7 @@ const businessPlans = [
 ];
 
 /* ── Business stats banner ─────────────────────────────── */
-function StatsBanner({ visible }) {
+function StatsBanner({ visible, isMobile }) {
   const stats = [
     { value: '300%', label: 'Average ROI' },
     { value: '30%', label: 'Burnout Reduction' },
@@ -202,7 +203,7 @@ function StatsBanner({ visible }) {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
           gap: '16px',
           textAlign: 'center',
         }}
@@ -548,6 +549,7 @@ export default function Pricing() {
   const [activeTab, setActiveTab] = useState('individuals');
   const { ref, visible } = useInView(0.08);
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const plans = activeTab === 'individuals' ? individualPlans : businessPlans;
   const footerText =
@@ -623,7 +625,7 @@ export default function Pricing() {
         {/* Transitioning content */}
         <div style={{ viewTransitionName: 'pricing-cards' }}>
           {/* Stats banner (business only) */}
-          {activeTab === 'business' && <StatsBanner visible={visible} />}
+          {activeTab === 'business' && <StatsBanner visible={visible} isMobile={isMobile} />}
 
           {/* Cards */}
           <div className="pricing-grid" style={{ margin: '0 auto' }}>

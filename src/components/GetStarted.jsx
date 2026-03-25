@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -27,6 +28,7 @@ function useInView(threshold = 0.15) {
 
 export default function GetStarted() {
   const { ref, visible } = useInView(0.15);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -46,8 +48,8 @@ export default function GetStarted() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '800px',
-          height: '800px',
+          width: isMobile ? '500px' : '800px',
+          height: isMobile ? '500px' : '800px',
           borderRadius: '50%',
           background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)',
           pointerEvents: 'none',
@@ -130,10 +132,10 @@ export default function GetStarted() {
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'stretch' : 'center',
             justifyContent: 'center',
             gap: '16px',
-            flexWrap: 'wrap',
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
             transition: 'opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s',
@@ -145,6 +147,7 @@ export default function GetStarted() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '8px',
               padding: '16px 40px',
               background: '#fff',
@@ -167,6 +170,7 @@ export default function GetStarted() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               padding: '16px 40px',
               background: 'transparent',
               color: '#fff',

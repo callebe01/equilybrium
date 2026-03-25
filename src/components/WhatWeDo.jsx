@@ -1,10 +1,13 @@
 import useScrollProgress from '../hooks/useScrollProgress';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 export default function WhatWeDo() {
   const { ref, progress } = useScrollProgress();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   // Circles drift from left to right as user scrolls through the section
-  const drift = progress * 500;
+  const drift = progress * (isMobile ? 250 : 500);
+  const circleSize = isMobile ? '400px' : '700px';
 
   return (
     <section
@@ -13,8 +16,8 @@ export default function WhatWeDo() {
       className="relative overflow-hidden"
       style={{
         background: '#fff',
-        padding: '140px 48px',
-        minHeight: '100vh',
+        padding: isMobile ? '80px 20px' : '140px 48px',
+        minHeight: isMobile ? 'auto' : '100vh',
         display: 'flex',
         alignItems: 'center',
       }}
@@ -25,12 +28,12 @@ export default function WhatWeDo() {
         <div
           style={{
             position: 'absolute',
-            width: '700px',
-            height: '700px',
+            width: circleSize,
+            height: circleSize,
             borderRadius: '50%',
             border: '1px solid rgba(122,140,118,0.15)',
             top: '50%',
-            left: '-80px',
+            left: isMobile ? '-120px' : '-80px',
             transform: `translate(${drift * 0.8}px, -50%)`,
             transition: 'transform 0.05s linear',
             willChange: 'transform',
@@ -40,12 +43,12 @@ export default function WhatWeDo() {
         <div
           style={{
             position: 'absolute',
-            width: '700px',
-            height: '700px',
+            width: circleSize,
+            height: circleSize,
             borderRadius: '50%',
             border: '1px solid rgba(122,140,118,0.15)',
             top: '50%',
-            left: '180px',
+            left: isMobile ? '40px' : '180px',
             transform: `translate(${drift}px, -50%)`,
             transition: 'transform 0.05s linear',
             willChange: 'transform',
@@ -55,12 +58,12 @@ export default function WhatWeDo() {
         <div
           style={{
             position: 'absolute',
-            width: '700px',
-            height: '700px',
+            width: circleSize,
+            height: circleSize,
             borderRadius: '50%',
             background: 'radial-gradient(circle at 70% 50%, rgba(122,140,118,0.06) 0%, transparent 70%)',
             top: '50%',
-            left: '-80px',
+            left: isMobile ? '-120px' : '-80px',
             transform: `translate(${drift * 0.9}px, -50%)`,
             transition: 'transform 0.05s linear',
             willChange: 'transform',
@@ -70,7 +73,12 @@ export default function WhatWeDo() {
 
       {/* Content */}
       <div className="relative" style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '40px' : '80px',
+          alignItems: 'center',
+        }}>
           {/* Left — Section intro */}
           <div>
             <p
@@ -102,7 +110,7 @@ export default function WhatWeDo() {
             </h2>
             <p
               style={{
-                fontSize: '17px',
+                fontSize: isMobile ? '16px' : '17px',
                 fontWeight: 300,
                 color: 'var(--muted)',
                 lineHeight: 1.7,
@@ -116,7 +124,7 @@ export default function WhatWeDo() {
           </div>
 
           {/* Right — Feature points */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '36px' : '48px' }}>
             {[
               {
                 number: '01',
@@ -134,16 +142,16 @@ export default function WhatWeDo() {
                 desc: 'A daily wellness score drawn from your activity, sleep, and workload. Track trends over time and understand what drives your energy.',
               },
             ].map((item) => (
-              <div key={item.number} style={{ display: 'flex', gap: '24px' }}>
+              <div key={item.number} style={{ display: 'flex', gap: isMobile ? '16px' : '24px' }}>
                 <span
                   style={{
                     fontFamily: "'Playfair Display', serif",
-                    fontSize: '36px',
+                    fontSize: isMobile ? '28px' : '36px',
                     fontWeight: 400,
                     color: 'rgba(122,140,118,0.3)',
                     lineHeight: 1,
                     flexShrink: 0,
-                    width: '48px',
+                    width: isMobile ? '36px' : '48px',
                   }}
                 >
                   {item.number}
