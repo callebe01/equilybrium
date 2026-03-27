@@ -6,6 +6,7 @@ import WhyEquilybrium from './components/WhyEquilybrium'
 import PrivacyPromise from './components/PrivacyPromise'
 import Pricing from './components/Pricing'
 import GetStarted from './components/GetStarted'
+import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import WhatWeDo from './components/WhatWeDo'
 
@@ -21,6 +22,7 @@ function App() {
       <PrivacyPromise />
       <Pricing />
       <GetStarted />
+      <FAQ />
       <Footer />
     </>
   )

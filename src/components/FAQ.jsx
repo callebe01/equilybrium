@@ -1,121 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from '../i18n';
 
-/* ── FAQ Data ──────────────────────────────────────────── */
-const categories = [
-  {
-    id: 'getting-started',
-    label: 'Getting Started',
-    questions: [
-      {
-        q: 'What is Equilybrium?',
-        a: 'Equilybrium is a comprehensive wellness platform that uses AI and machine learning to help prevent burnout. It analyzes your work patterns, sleep data, and health metrics to provide personalized insights and early warnings about potential burnout risks.',
-      },
-      {
-        q: 'What do I need to get started?',
-        a: 'We recommend installing the Desktop Agent (required for 85% accuracy), the Browser Extension (for productivity tracking), and optionally the Mobile App (for health data from wearables). The more data sources connected, the more accurate your burnout predictions become.',
-      },
-      {
-        q: 'How long is the free trial?',
-        a: 'New users receive a 30 day free trial with full access to all Premium features. No credit card required to start. After the trial, you can upgrade to Premium or continue with the free tier.',
-      },
-      {
-        q: 'How quickly will I see insights?',
-        a: 'You will see initial data within hours of installing the Desktop Agent. Our ML models need at least 7 days of data for reliable predictions, and reach optimal accuracy after 30 days of continuous usage.',
-      },
-    ],
-  },
-  {
-    id: 'billing',
-    label: 'Account & Billing',
-    questions: [
-      {
-        q: 'How much does Premium cost?',
-        a: 'Premium is $9.99/month billed monthly, or $99.99/year (save 17%) billed annually. All prices include taxes where applicable. Enterprise pricing is available for organizations with 10 or more users.',
-      },
-      {
-        q: 'How do I cancel my subscription?',
-        a: 'You can cancel anytime from Settings, then Subscription, then Cancel Plan. Your Premium access continues until the end of your current billing period.',
-      },
-      {
-        q: 'What is the difference between Free and Premium?',
-        a: 'Premium includes all 8 wellness indicators, unlimited AI insights, 365 day data history, PDF reports, priority support, and advanced analytics. The Free tier provides 4 core indicators, 1 AI insight per week, 90 day history, and self service support.',
-      },
-      {
-        q: 'Will I get a refund if I cancel?',
-        a: 'We offer a 30 day money back guarantee for new Premium subscribers. If you are not satisfied within 30 days of upgrading, contact support for a full refund. After 30 days, cancellations take effect at the end of your billing period.',
-      },
-    ],
-  },
-  {
-    id: 'privacy',
-    label: 'Privacy & Security',
-    questions: [
-      {
-        q: 'How is my data protected?',
-        a: 'All data is encrypted using AES 256 encryption both in transit (TLS 1.3) and at rest. We use secure cloud infrastructure with SOC 2 Type II certification. Your data is stored in compliance with GDPR, LGPD, and HIPAA regulations.',
-      },
-      {
-        q: 'Does Equilybrium sell my data?',
-        a: 'Never. Your personal data is never sold, shared, or used for advertising purposes. We only use your data to provide you with personalized wellness insights. You maintain full ownership of your data at all times.',
-      },
-      {
-        q: 'Can my employer see my data?',
-        a: 'For personal accounts, your data is completely private. For corporate accounts, employers see only anonymized, aggregated team statistics. Individual data is never visible to managers without your explicit consent.',
-      },
-      {
-        q: 'Can I export my data?',
-        a: 'Yes. Go to Settings, then Privacy, then Export Data. You can download all your data in JSON or CSV format. Premium users get unlimited exports. Free users can export once per month. Your data belongs to you, and you control it.',
-      },
-    ],
-  },
-  {
-    id: 'features',
-    label: 'Features & Usage',
-    questions: [
-      {
-        q: 'How accurate are the predictions?',
-        a: 'With Desktop Agent and Browser Extension combined, accuracy reaches 85%. Adding the Mobile App can push that up to 98%. Our model is validated against clinical assessments (BAT, CBI, MBI) and continuously improves with more data.',
-      },
-      {
-        q: 'What are the 8 wellness indicators?',
-        a: 'Premium includes Burnout Risk, Sleep Quality, Work Life Balance, Mental Energy, Focus and Productivity, Physical Activity, Recovery Quality, and Stress Patterns. The Free tier provides the first 4 indicators.',
-      },
-      {
-        q: 'What is the Confidence Score?',
-        a: 'The Confidence Score (0 to 100%) indicates how reliable your burnout prediction is based on data quality. More data sources and consistent usage increase confidence. We recommend at least 70% confidence for actionable insights.',
-      },
-    ],
-  },
-  {
-    id: 'support',
-    label: 'Technical Support',
-    questions: [
-      {
-        q: 'The Desktop Agent is not connecting. What should I do?',
-        a: 'Check if the agent is running by looking for the tray icon. Restart the agent from the system tray. Verify your firewall settings allow the connection. If needed, reinstall the agent. It uses port 54321 for browser communication.',
-      },
-      {
-        q: 'My data is not syncing. How do I fix it?',
-        a: 'Check your internet connection first. Pull down to refresh on mobile, click Sync Now in the Desktop Agent, or log out and back in to force a full sync. If issues persist, contact tech@equilybrium.health.',
-      },
-      {
-        q: 'What are the system requirements?',
-        a: 'Desktop Agent requires Windows 10/11 or macOS 10.15 and above, 100MB disk space, 2GB RAM. Mobile App requires iOS 14 or above, or Android 8.0 and above. Browser Extension works with any modern browser including Chrome, Edge, Firefox, and Brave.',
-      },
-    ],
-  },
+const CATEGORY_SCHEMA = [
+  { id: 'getting-started', key: 'gettingStarted', itemCount: 4 },
+  { id: 'billing', key: 'billing', itemCount: 4 },
+  { id: 'privacy', key: 'privacy', itemCount: 4 },
+  { id: 'features', key: 'features', itemCount: 3 },
+  { id: 'support', key: 'support', itemCount: 3 },
 ];
 
-/* ── Accordion Item ────────────────────────────────────── */
-function AccordionItem({ question, answer, isOpen, onToggle }) {
-  const contentRef = useRef(null);
-  const [height, setHeight] = useState(0);
+function getCategories(t) {
+  return CATEGORY_SCHEMA.map((category) => ({
+    id: category.id,
+    label: t(`faq.categories.${category.key}.label`),
+    questions: Array.from({ length: category.itemCount }, (_, index) => ({
+      q: t(`faq.categories.${category.key}.items.${index}.q`),
+      a: t(`faq.categories.${category.key}.items.${index}.a`),
+    })),
+  }));
+}
 
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(isOpen ? contentRef.current.scrollHeight : 0);
-    }
-  }, [isOpen]);
+function AccordionItem({ question, answer, isOpen, onToggle }) {
 
   return (
     <div
@@ -124,6 +29,7 @@ function AccordionItem({ question, answer, isOpen, onToggle }) {
       }}
     >
       <button
+        type="button"
         onClick={onToggle}
         style={{
           width: '100%',
@@ -180,40 +86,40 @@ function AccordionItem({ question, answer, isOpen, onToggle }) {
 
       <div
         style={{
-          height: `${height}px`,
-          overflow: 'hidden',
-          transition: 'height 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+          display: 'grid',
+          gridTemplateRows: isOpen ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        <div
-          ref={contentRef}
-          style={{
-            paddingBottom: '22px',
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: 'clamp(14px, 1.4vw, 15px)',
-            fontWeight: 300,
-            color: 'var(--muted)',
-            lineHeight: 1.75,
-            maxWidth: '640px',
-          }}
-        >
-          {answer}
+        <div style={{ overflow: 'hidden' }}>
+          <div
+            style={{
+              paddingBottom: '22px',
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 'clamp(14px, 1.4vw, 15px)',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.75,
+              maxWidth: '640px',
+            }}
+          >
+            {answer}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/* ── Main FAQ Section ──────────────────────────────────── */
 export default function FAQ() {
+  const { t } = useTranslation();
+  const categories = getCategories(t);
   const [activeCategory, setActiveCategory] = useState('getting-started');
   const [openIndex, setOpenIndex] = useState(null);
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef(null);
-  const pillRef = useRef(null);
   const tabRefs = useRef({});
 
-  /* Entrance animation */
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -228,7 +134,6 @@ export default function FAQ() {
     return () => observer.disconnect();
   }, []);
 
-  /* Sliding pill position */
   const [pillStyle, setPillStyle] = useState({});
 
   useEffect(() => {
@@ -252,7 +157,6 @@ export default function FAQ() {
       }}
     >
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        {/* Header */}
         <div
           style={{
             textAlign: 'center',
@@ -273,7 +177,7 @@ export default function FAQ() {
               marginBottom: '16px',
             }}
           >
-            FAQ
+            {t('faq.label')}
           </p>
           <h2
             style={{
@@ -285,11 +189,10 @@ export default function FAQ() {
               letterSpacing: '-0.02em',
             }}
           >
-            Frequently Asked Questions
+            {t('faq.heading')}
           </h2>
         </div>
 
-        {/* Category tabs */}
         <div
           style={{
             opacity: visible ? 1 : 0,
@@ -310,7 +213,6 @@ export default function FAQ() {
               scrollbarWidth: 'none',
             }}
           >
-            {/* Sliding pill */}
             <div
               style={{
                 position: 'absolute',
@@ -327,6 +229,7 @@ export default function FAQ() {
             {categories.map((cat) => (
               <button
                 key={cat.id}
+                type="button"
                 ref={(el) => (tabRefs.current[cat.id] = el)}
                 onClick={() => {
                   setActiveCategory(cat.id);
@@ -354,7 +257,6 @@ export default function FAQ() {
           </div>
         </div>
 
-        {/* Accordion */}
         <div
           style={{
             opacity: visible ? 1 : 0,
@@ -379,7 +281,6 @@ export default function FAQ() {
           </div>
         </div>
 
-        {/* Still have questions */}
         <div
           style={{
             marginTop: 'clamp(40px, 6vw, 56px)',
@@ -398,7 +299,7 @@ export default function FAQ() {
               marginBottom: '16px',
             }}
           >
-            Still have questions?
+            {t('faq.contactPrompt')}
           </p>
           <a
             href="mailto:support@equilybrium.health"
@@ -417,13 +318,12 @@ export default function FAQ() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            Contact Support
+            {t('faq.contactCta')}
             <span style={{ fontSize: '16px' }}>→</span>
           </a>
         </div>
       </div>
 
-      {/* Hide scrollbar on tabs */}
       <style>{`
         div::-webkit-scrollbar { display: none; }
       `}</style>
