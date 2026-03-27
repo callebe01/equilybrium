@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation, SUPPORTED_LANGUAGES } from '../i18n';
 
-export default function LanguageSelector({ mobile = false }) {
+export default function LanguageSelector({ mobile = false, compact = false }) {
   const { language, setLanguage } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -60,8 +60,9 @@ export default function LanguageSelector({ mobile = false }) {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '4px',
-          padding: '7px 12px',
-          fontSize: '12px',
+          padding: compact ? '6px 10px' : '7px 12px',
+          minHeight: compact ? '36px' : undefined,
+          fontSize: compact ? '11px' : '12px',
           fontWeight: 500,
           fontFamily: "'DM Sans', sans-serif",
           color: 'var(--muted)',
@@ -83,8 +84,8 @@ export default function LanguageSelector({ mobile = false }) {
       >
         {current?.label ?? 'EN'}
         <svg
-          width="10"
-          height="10"
+          width={compact ? '9' : '10'}
+          height={compact ? '9' : '10'}
           viewBox="0 0 10 10"
           fill="none"
           style={{
@@ -102,7 +103,7 @@ export default function LanguageSelector({ mobile = false }) {
             position: 'absolute',
             top: 'calc(100% + 8px)',
             right: 0,
-            minWidth: '160px',
+            minWidth: compact ? '140px' : '160px',
             background: 'rgba(255,255,255,0.85)',
             backdropFilter: 'blur(20px) saturate(1.4)',
             WebkitBackdropFilter: 'blur(20px) saturate(1.4)',

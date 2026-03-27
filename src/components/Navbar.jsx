@@ -82,10 +82,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menu when switching to desktop
   useEffect(() => {
-    if (!isMobile) setMenuOpen(false);
-  }, [isMobile]);
+    const mq = window.matchMedia('(min-width: 769px)');
+    const handleChange = (event) => {
+      if (event.matches) {
+        setMenuOpen(false);
+      }
+    };
+
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, []);
 
   return (
     <div
@@ -172,24 +179,35 @@ export default function Navbar() {
 
         {/* Hamburger button */}
         {isMobile && (
-          <button
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? t('navbar.aria.closeMenu') : t('navbar.aria.openMenu')}
+          <div
+            className="opacity-0"
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              width: '44px',
-              height: '44px',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              WebkitTapHighlightColor: 'transparent',
+              gap: '8px',
+              animation: 'fadeUp 0.7s ease 0.2s forwards',
             }}
           >
-            <HamburgerIcon open={menuOpen} />
-          </button>
+            <LanguageSelector compact />
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? t('navbar.aria.closeMenu') : t('navbar.aria.openMenu')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '44px',
+                height: '44px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              <HamburgerIcon open={menuOpen} />
+            </button>
+          </div>
         )}
       </nav>
 
@@ -243,9 +261,6 @@ export default function Navbar() {
                 {label}
               </a>
             ))}
-            <div style={{ padding: '8px 8px 4px' }}>
-              <LanguageSelector mobile />
-            </div>
             <div style={{ padding: '4px 8px 0' }}>
               <a
                 href="#"
