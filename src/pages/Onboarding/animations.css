@@ -1,0 +1,357 @@
+@keyframes equilStepIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes equilFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes equilFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes equilScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes equilOrbPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes equilRing {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes equilDots {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+@keyframes equilProgress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes equilShimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes equilDrift {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(28px); opacity: 0.55; }
+}
+
+.equil-drift {
+  animation: equilDrift 4s ease-in-out infinite;
+}
+
+.equil-step {
+  animation: equilStepIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.equil-reveal {
+  opacity: 0;
+  animation: equilFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.equil-reveal-d0 { animation-delay: 0s; }
+.equil-reveal-d1 { animation-delay: 0.08s; }
+.equil-reveal-d2 { animation-delay: 0.16s; }
+.equil-reveal-d3 { animation-delay: 0.24s; }
+.equil-reveal-d4 { animation-delay: 0.32s; }
+.equil-reveal-d5 { animation-delay: 0.4s; }
+.equil-reveal-d6 { animation-delay: 0.48s; }
+.equil-reveal-d7 { animation-delay: 0.56s; }
+.equil-reveal-d8 { animation-delay: 0.64s; }
+
+.equil-modal-scale {
+  animation: equilScaleIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.equil-orb {
+  animation: equilOrbPulse 2s ease-in-out infinite;
+}
+
+.equil-ring {
+  animation: equilRing 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.equil-dot {
+  animation: equilDots 1.4s ease-in-out infinite;
+}
+
+.equil-progress-fill {
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.equil-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 58, 42, 0) 0%,
+    rgba(26, 58, 42, 0.08) 50%,
+    rgba(26, 58, 42, 0) 100%
+  );
+  background-size: 400px 100%;
+  animation: equilShimmer 1.8s ease-in-out infinite;
+}
+
+.equil-install-root {
+  width: 100%;
+  max-width: 827px;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.equil-install-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: clamp(32px, 5.2vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 0;
+}
+
+.equil-install-subtitle {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+  width: 552px;
+  max-width: 100%;
+}
+
+.equil-install-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-self: stretch;
+  margin-top: 8px;
+}
+
+.equil-install-options > * {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .equil-install-options {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+.equil-cta-row {
+  flex-wrap: wrap;
+  padding-left: 24px;
+  padding-right: 24px;
+  row-gap: 8px;
+  box-sizing: border-box;
+}
+
+.equil-cta-row > button {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 760px) {
+  .equil-cta-row {
+    flex-direction: column;
+    align-items: stretch !important;
+    row-gap: 6px;
+    padding-bottom: 0;
+  }
+  .equil-cta-row > button[data-cta="primary"],
+  .equil-cta-row > button[data-cta="secondary"] {
+    width: 100%;
+  }
+  .equil-cta-row > button:not([data-cta]) {
+    align-self: center;
+  }
+  .equil-cta-backdrop {
+    height: 320px !important;
+    background: linear-gradient(to bottom, rgba(245, 240, 232, 0) 0%, rgba(245, 240, 232, 0.85) 35%, rgba(245, 240, 232, 0.98) 100%) !important;
+  }
+}
+
+.equil-step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 32px;
+  width: 100%;
+}
+
+.equil-step-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 560px) {
+  .equil-step-slot {
+    width: 72px !important;
+  }
+  .equil-step-connector {
+    width: 28px !important;
+  }
+  .equil-step-slot span {
+    font-size: 11px !important;
+  }
+}
+
+.equil-boundary-diagram {
+  box-sizing: border-box;
+}
+
+@media (max-width: 760px) {
+  .equil-boundary-diagram {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    padding: 24px 18px !important;
+    justify-items: center;
+  }
+  .equil-boundary-diagram > div:first-child,
+  .equil-boundary-diagram > div:last-child {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .equil-boundary-svg {
+    margin: 0 auto;
+    max-width: 100%;
+  }
+  .equil-boundary-svg .equil-drift {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+.equil-privacy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 56px;
+  padding-top: 16px;
+}
+
+@media (max-width: 760px) {
+  .equil-privacy-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .equil-privacy-grid > div[aria-hidden] {
+    display: none;
+  }
+}
+
+.equil-install-progress-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-self: stretch;
+  justify-content: center;
+}
+
+@media (max-width: 960px) {
+  .equil-install-progress-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center;
+  }
+  .equil-install-progress-grid > .equil-browser-mock {
+    width: 100% !important;
+    max-width: 437px;
+  }
+}
+
+.equil-install-progress-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: clamp(30px, 4.8vw, 50px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 0;
+}
+
+.equil-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 48px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+  .equil-header-inner {
+    padding: 14px 20px;
+  }
+  .equil-header-meta {
+    gap: 12px !important;
+  }
+  .equil-header-setup-time {
+    display: none;
+  }
+  .equil-header-email span {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .equil-step,
+  .equil-reveal,
+  .equil-modal-scale,
+  .equil-orb,
+  .equil-ring,
+  .equil-dot,
+  .equil-shimmer {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

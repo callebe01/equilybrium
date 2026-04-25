@@ -1,30 +1,15 @@
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import TheReality from './components/TheReality'
-import BuiltForBoth from './components/BuiltForBoth'
-import WhyEquilybrium from './components/WhyEquilybrium'
-import PrivacyPromise from './components/PrivacyPromise'
-import Pricing from './components/Pricing'
-import GetStarted from './components/GetStarted'
-import FAQ from './components/FAQ'
-import Footer from './components/Footer'
-import WhatWeDo from './components/WhatWeDo'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Landing from './pages/Landing'
+import Onboarding from './pages/Onboarding'
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Hero />
-      <TheReality />
-      <BuiltForBoth />
-      <WhatWeDo />
-      <WhyEquilybrium />
-      <PrivacyPromise />
-      <Pricing />
-      <GetStarted />
-      <FAQ />
-      <Footer />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/onboarding/*" element={<Onboarding />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equilybrium · A note on what we watch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --limestone: #F2ECDD;
+      --paper: #FBF7EC;
+      --ink: #15140F;
+      --graphite: #4A4843;
+      --brass: #9B7835;
+      --brass-soft: #C9A24A;
+      --line: #D8CEB6;
+      --line-soft: #E8DFCB;
+      --muted: #857E6C;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--limestone);
+      color: var(--ink);
+      font-family: 'Fraunces', 'Playfair Display', Georgia, serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: 'liga', 'dlig', 'kern';
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(155, 120, 53, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 85% 80%, rgba(21, 20, 15, 0.04) 0%, transparent 50%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.06 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.45'/></svg>");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stage {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 64px 96px;
+    }
+
+    /* Top folio */
+    .folio {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .folio .mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .folio .mark svg { flex-shrink: 0; }
+    .folio .mark strong {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      text-transform: none;
+    }
+    .folio .center { color: var(--brass); }
+    .folio .right { text-align: right; }
+
+    /* Overture */
+    .overture {
+      padding: 72px 0 40px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .overture .meta {
+      border-top: 1px solid var(--ink);
+      padding-top: 14px;
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      line-height: 1.6;
+      animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+    }
+    .overture .meta .chip {
+      display: inline-block;
+      padding: 3px 8px;
+      background: var(--ink);
+      color: var(--paper);
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .overture h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: clamp(46px, 6.2vw, 84px);
+      line-height: 0.98;
+      letter-spacing: -0.028em;
+      color: var(--ink);
+      animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+    }
+    .overture h1 em {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--brass);
+    }
+    .overture h1 .small {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 0.3em;
+      letter-spacing: 0.02em;
+      color: var(--graphite);
+      margin-top: 20px;
+    }
+
+    /* Lede */
+    .lede {
+      padding-top: 40px;
+      padding-left: 264px;
+      max-width: 720px;
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-size: 21px;
+      line-height: 1.55;
+      color: var(--ink);
+      animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+    }
+    .lede .dropcap {
+      float: left;
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: 82px;
+      line-height: 0.84;
+      padding: 8px 12px 0 0;
+      color: var(--brass);
+    }
+
+    /* Boundary diagram */
+    .boundary {
+      margin: 72px 0 56px;
+      padding: 28px 32px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 40px;
+      align-items: center;
+      animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+    }
+    .boundary .side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .boundary .side .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--graphite);
+    }
+    .boundary .side .name {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .boundary .side .note {
+      font-family: 'Fraunces', serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--graphite);
+      max-width: 240px;
+    }
+    .boundary .side.right { text-align: right; align-items: flex-end; }
+    .boundary .side.right .note { text-align: right; }
+
+    .boundary .frontier {
+      position: relative;
+      width: 260px;
+      height: 140px;
+    }
+    .boundary .frontier svg { width: 100%; height: 100%; overflow: visible; }
+
+    .counting {
+      position: absolute;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--paper);
+      background: var(--ink);
+      padding: 3px 8px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .counting.a { top: 18px; left: 82px; animation: drift 4s ease-in-out infinite; }
+    .counting.b { top: 58px; left: 98px; animation: drift 4s ease-in-out infinite 1.3s; }
+    .counting.c { top: 96px; left: 78px; animation: drift 4s ease-in-out infinite 2.6s; }
+
+    @keyframes drift {
+      0%, 100% { transform: translateX(0); opacity: 1; }
+      50% { transform: translateX(24px); opacity: 0.6; }
+    }
+
+    /* Columns of promises */
+    .promises {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 56px;
+      padding-top: 8px;
+    }
+    .promises .divider {
+      background: repeating-linear-gradient(
+        to bottom,
+        var(--line) 0px,
+        var(--line) 6px,
+        transparent 6px,
+        transparent 12px
+      );
+      width: 1px;
+      justify-self: center;
+    }
+
+    .column h2 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brass);
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .column.exclusions h2 {
+      color: var(--graphite);
+    }
+    .column h2 .counter {
+      color: var(--graphite);
+      margin-right: 12px;
+    }
+
+    .column ol {
+      list-style: none;
+      counter-reset: roman;
+    }
+    .column li {
+      counter-increment: roman;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line-soft);
+      position: relative;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 8px;
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: 19px;
+      line-height: 1.38;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+      animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .column.inclusions li:nth-child(1) { animation-delay: 0.5s; }
+    .column.inclusions li:nth-child(2) { animation-delay: 0.58s; }
+    .column.inclusions li:nth-child(3) { animation-delay: 0.66s; }
+    .column.inclusions li:nth-child(4) { animation-delay: 0.74s; }
+    .column.inclusions li:nth-child(5) { animation-delay: 0.82s; }
+    .column.exclusions li:nth-child(1) { animation-delay: 0.56s; }
+    .column.exclusions li:nth-child(2) { animation-delay: 0.64s; }
+    .column.exclusions li:nth-child(3) { animation-delay: 0.72s; }
+    .column.exclusions li:nth-child(4) { animation-delay: 0.8s; }
+    .column.exclusions li:nth-child(5) { animation-delay: 0.88s; }
+
+    .column li::before {
+      content: counter(roman, upper-roman) '.';
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 18px;
+      color: var(--brass);
+      padding-top: 2px;
+    }
+    .column.exclusions li::before { color: var(--graphite); opacity: 0.55; }
+    .column.exclusions li .strike {
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--graphite);
+      color: var(--graphite);
+    }
+    .column li .foot {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+      display: block;
+      grid-column: 2;
+    }
+
+    /* Seal + declaration */
+    .declaration {
+      margin-top: 72px;
+      padding: 36px 40px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 140px;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both;
+    }
+
+    .declaration::before {
+      content: '§';
+      position: absolute;
+      top: -20px;
+      left: 28px;
+      background: var(--limestone);
+      padding: 0 12px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--brass);
+    }
+
+    .declaration .copy {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .declaration .copy strong {
+      font-weight: 500;
+      color: var(--ink);
+      font-style: italic;
+    }
+    .declaration .copy .caption {
+      display: block;
+      margin-top: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .seal {
+      width: 140px;
+      height: 140px;
+      border: 1px solid var(--brass);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      color: var(--brass);
+      transform: rotate(-6deg);
+    }
+    .seal::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed var(--brass);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+    .seal .heart {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 30px;
+      color: var(--brass);
+      font-weight: 500;
+      letter-spacing: 0;
+      margin: 4px 0;
+    }
+
+    /* Actions */
+    .actions {
+      margin-top: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 28px;
+      border-top: 1px solid var(--ink);
+      animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.05s both;
+    }
+    .actions .query {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--graphite);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--line);
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+    .actions .query:hover { color: var(--ink); text-decoration-color: var(--ink); }
+
+    .actions .ready {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: 17px;
+      color: var(--paper);
+      background: var(--ink);
+      border: none;
+      padding: 18px 32px 18px 36px;
+      cursor: pointer;
+      position: relative;
+      letter-spacing: -0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease;
+    }
+    .actions .ready em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--brass-soft);
+    }
+    .actions .ready .arrow {
+      display: inline-block;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .actions .ready:hover { background: #0A0A08; }
+    .actions .ready:hover .arrow { transform: translateX(4px); }
+
+    /* Marginalia – running side notes */
+    .margin-note {
+      position: absolute;
+      right: -12px;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 160px;
+      line-height: 1.4;
+      text-align: left;
+      padding-left: 12px;
+      border-left: 1px solid var(--line);
+    }
+
+    /* Reveal anim */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .stage { padding: 32px 28px 72px; }
+      .overture { grid-template-columns: 1fr; gap: 24px; padding-top: 48px; }
+      .overture h1 { font-size: 54px; }
+      .lede { padding-left: 0; font-size: 18px; }
+      .boundary { grid-template-columns: 1fr; text-align: center; gap: 28px; }
+      .boundary .frontier { width: 100%; max-width: 320px; margin: 0 auto; }
+      .boundary .side.right { text-align: center; align-items: center; }
+      .boundary .side.right .note { text-align: center; }
+      .promises { grid-template-columns: 1fr; gap: 32px; }
+      .promises .divider { display: none; }
+      .declaration { grid-template-columns: 1fr; text-align: center; }
+      .seal { justify-self: center; }
+      .actions { flex-direction: column; gap: 20px; align-items: stretch; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+
+    <div class="folio">
+      <div class="mark">
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#15140F" stroke-width="1.3"/>
+          <path d="M10 20c2-4 4-8 6-8s4 4 6 8" stroke="#15140F" stroke-width="1.3" fill="none"/>
+          <path d="M12 18c1.5-3 3-5 4-5s2.5 2 4 5" stroke="#9B7835" stroke-width="1.1" fill="none"/>
+        </svg>
+        <strong>Equilybrium</strong>
+      </div>
+      <div class="center">Vol. I &middot; Fascicle 02 &middot; On Measurement</div>
+      <div class="right">For Callebe &middot; 22 April 2026</div>
+    </div>
+
+    <section class="overture">
+      <div class="meta">
+        <span class="chip">Before you install</span><br>
+        Subject &mdash; privacy<br>
+        Reading time &mdash; 90 seconds<br>
+        Signed &mdash; the team<br>
+        Revision &mdash; MMXXVI.04
+      </div>
+      <h1>
+        A note on what we <em>watch</em>,<br>
+        and what we <em>never will</em>.
+        <span class="small">Plainly, without footnotes, and without asterisks.</span>
+      </h1>
+    </section>
+
+    <p class="lede">
+      <span class="dropcap">E</span>quilybrium measures the shape of your working day. It learns the rhythm. The cadence. The quiet drift between focus and fatigue. It does not read a single word you type, say, or save. What follows is the full list, kept as short as honesty allows.
+    </p>
+
+    <section class="boundary">
+      <div class="side left">
+        <span class="label">I · Here</span>
+        <span class="name">Your machine</span>
+        <span class="note">Raw activity is processed on your computer, in memory, and never written to our servers.</span>
+      </div>
+
+      <div class="frontier">
+        <svg viewBox="0 0 260 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Horizon -->
+          <line x1="0" y1="70" x2="260" y2="70" stroke="#15140F" stroke-width="1"/>
+          <!-- Tick marks -->
+          <line x1="8" y1="66" x2="8" y2="74" stroke="#15140F" stroke-width="1"/>
+          <line x1="252" y1="66" x2="252" y2="74" stroke="#15140F" stroke-width="1"/>
+          <!-- Machine icon -->
+          <g transform="translate(10, 26)">
+            <rect x="0" y="0" width="52" height="34" rx="3" stroke="#15140F" stroke-width="1.2" fill="none"/>
+            <line x1="0" y1="34" x2="52" y2="34" stroke="#15140F" stroke-width="1.2"/>
+            <line x1="-4" y1="40" x2="56" y2="40" stroke="#15140F" stroke-width="1.2"/>
+            <line x1="22" y1="6" x2="34" y2="6" stroke="#9B7835" stroke-width="1"/>
+            <line x1="18" y1="12" x2="38" y2="12" stroke="#9B7835" stroke-width="1" opacity="0.7"/>
+            <line x1="22" y1="18" x2="34" y2="18" stroke="#9B7835" stroke-width="1" opacity="0.5"/>
+          </g>
+          <!-- Boundary (perforated vertical) -->
+          <line x1="130" y1="4" x2="130" y2="136" stroke="#9B7835" stroke-width="1" stroke-dasharray="3 5"/>
+          <text x="130" y="138" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#9B7835" letter-spacing="2">BOUNDARY</text>
+          <!-- Cloud/leaf shape right -->
+          <g transform="translate(196, 34)">
+            <path d="M4 22 Q 0 10, 12 10 Q 14 0, 26 4 Q 38 2, 40 14 Q 50 16, 44 26 Q 44 36, 30 32 Q 18 38, 10 32 Q -2 32, 4 22 Z" stroke="#15140F" stroke-width="1.2" fill="#FBF7EC"/>
+            <path d="M24 12 Q 20 18, 22 28" stroke="#9B7835" stroke-width="1" fill="none"/>
+          </g>
+        </svg>
+        <span class="counting a">4h 23m · Figma</span>
+        <span class="counting b">12 switches</span>
+        <span class="counting c">3 meetings</span>
+      </div>
+
+      <div class="side right">
+        <span class="label">II · There</span>
+        <span class="name">Only the counts</span>
+        <span class="note">Aggregated figures, like &ldquo;four hours in Figma,&rdquo; are what leave your computer. Nothing else.</span>
+      </div>
+    </section>
+
+    <section class="promises">
+      <div class="column inclusions">
+        <h2><span class="counter">§ 01</span>What Equilybrium counts</h2>
+        <ol>
+          <li>
+            Time spent inside each application you open.
+            <span class="foot">aggregated hourly</span>
+          </li>
+          <li>
+            Switches between apps and browser tabs.
+            <span class="foot">count only &middot; not destinations</span>
+          </li>
+          <li>
+            The hours of the day you tend to work.
+            <span class="foot">daily histogram</span>
+          </li>
+          <li>
+            The density of meetings on your calendar.
+            <span class="foot">counts &middot; not titles or invitees</span>
+          </li>
+          <li>
+            The quiet gaps when your machine is idle.
+            <span class="foot">inferred from keyboard &amp; mouse</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="column exclusions">
+        <h2><span class="counter">§ 02</span>What Equilybrium never reads</h2>
+        <ol>
+          <li>
+            <span class="strike">The content of messages you write or receive.</span>
+            <span class="foot">not sampled, not stored, not inferred</span>
+          </li>
+          <li>
+            <span class="strike">The words inside any document or file.</span>
+            <span class="foot">we do not touch the filesystem</span>
+          </li>
+          <li>
+            <span class="strike">Screenshots or recordings of your screen.</span>
+            <span class="foot">capture apis are disabled</span>
+          </li>
+          <li>
+            <span class="strike">What you type, including credentials.</span>
+            <span class="foot">no keystroke access, by design</span>
+          </li>
+          <li>
+            <span class="strike">The URLs you visit in the browser.</span>
+            <span class="foot">only that a browser was open</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="declaration">
+      <div class="copy">
+        <strong>This agreement remains in force for as long as you use Equilybrium.</strong> Raw activity is processed on your machine, in memory. Only aggregated counts leave your computer. We commission a third party audit every spring and publish the report in full.
+        <span class="caption">Read the technical summary &rsaquo;</span>
+      </div>
+      <div class="seal" aria-label="Audited seal">
+        <span>Audited</span>
+        <span class="heart">&middot;</span>
+        <span>MMXXVI</span>
+      </div>
+    </section>
+
+    <footer class="actions">
+      <button class="query" type="button">I have questions first</button>
+      <button class="ready" type="button">
+        <span>I&rsquo;m ready to <em>install</em></span>
+        <span class="arrow">&rarr;</span>
+      </button>
+    </footer>
+
+  </main>
+</body>
+</html>
