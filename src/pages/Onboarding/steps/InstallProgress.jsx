@@ -243,7 +243,13 @@ function BrowserMock() {
   )
 }
 
+const CHROME_EXT_URL = 'https://chromewebstore.google.com/detail/equilybrium-burnout-preve/efaefilbmhbhkfdehnhjagichjcjfchl'
+
 export default function InstallProgress({ onContinue, onSkipChrome }) {
+  const handleAddToChrome = () => {
+    window.open(CHROME_EXT_URL, '_blank', 'noopener,noreferrer')
+    onContinue()
+  }
   return (
     <div style={{
       background: colors.bg,
@@ -300,7 +306,7 @@ export default function InstallProgress({ onContinue, onSkipChrome }) {
       </div>
 
       <FloatingCTA
-        primary={{ label: 'Add to', italicPart: 'Chrome', onClick: onContinue }}
+        primary={{ label: 'Add to', italicPart: 'Chrome', onClick: handleAddToChrome }}
         secondary={{ label: 'Skip the extension for now', onClick: onSkipChrome, variant: 'link' }}
         delay={0.7}
       />

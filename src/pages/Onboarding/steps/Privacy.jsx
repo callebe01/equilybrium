@@ -382,7 +382,7 @@ export default function Privacy({ onBack, onContinue }) {
             color: colors.accentGreen,
             margin: '0 0 12px',
           }}>
-            4 · Medical disclaimer
+            Medical disclaimer
           </h3>
           <p style={{
             fontFamily: fonts.sans,
